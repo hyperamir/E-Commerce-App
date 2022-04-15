@@ -1,9 +1,10 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer} from 'react';
 import axios from 'axios';
-import logger from 'use-reducer-logger';
 import Product from '../components/Product';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -20,7 +21,7 @@ const reducer = (state, action) => {
 }
 
 export default function HomeScreen() {
-  const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
+  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     products: [],
     loading: true,
     error: ''
@@ -45,8 +46,12 @@ export default function HomeScreen() {
       <h1>Featured Products</h1>
       <div className='products'>
         {
-          loading ? <div>LOADING...</div>
-            : error ? <div>{error}</div>
+          loading ? (
+            <LoadingBox />
+          )
+            : error ? (
+              <MessageBox variant='danger'>{error}</MessageBox>
+            )
               : (
                 <Row>
                   {products.map(product => (
