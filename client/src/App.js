@@ -10,11 +10,11 @@ function App() {
     <Router>
       <div className='d-flex flex-column site-container'>
         <header>
-          <Navbar bg='dark' varient='dark'>
+          <Navbar bg="dark" variant="dark">
             <Container>
-              <LinkContainer to='/'>
-                <Navbar.Brand>AMAZONX</Navbar.Brand>
-              </LinkContainer>
+              <Navbar.Brand href="/">
+                AMAZONX
+              </Navbar.Brand>
             </Container>
           </Navbar>
         </header>
