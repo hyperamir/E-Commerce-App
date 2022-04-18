@@ -10,15 +10,25 @@ import { useContext } from 'react';
 import { Store } from './Store';
 import CartScreen from './screens/CartScreen';
 import SigninScreen from './screens/SigninScreen';
-import { LinkContainer } from 'react-router-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ShippingAddressScreen from './screens/ShippingAddressScreen';
 
 function App() {
-  const { state } = useContext(Store);
+  const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
+
+  const signoutHandler = () => {
+    ctxDispatch({ type: 'USER_SIGNOUT' });
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('shippingAddress');
+  }
 
   return (
     <Router>
       <div className='d-flex flex-column site-container'>
+        <ToastContainer position='top-center' limit={1} />
         <header>
           <Navbar bg="dark" variant="dark">
             <Container>
@@ -42,6 +52,10 @@ function App() {
                     <LinkContainer to='/orderhistory'>
                       <NavDropdown.Item>Order History</NavDropdown.Item>
                     </LinkContainer>
+                    <NavDropdown.Divider />
+                    <Link className='dropdown-item' to='#signout' onClick={signoutHandler}>
+                      Sign Out
+                    </Link>
                   </NavDropdown>
                 ) : (
                   <Link className='nav-link' to='/signin'>
@@ -57,6 +71,7 @@ function App() {
             <Routes>
               <Route path='/' element={<HomeScreen />} />
               <Route path='/cart' element={<CartScreen />} />
+              <Route path='/shipping' element={<ShippingAddressScreen />} />
               <Route path='/signin' element={<SigninScreen />} />
               <Route path='/product/:slug' element={<ProductScreen />} />
             </Routes>

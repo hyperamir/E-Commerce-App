@@ -3,8 +3,10 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Store } from '../Store';
+import { toast } from 'react-toastify';
+import { getError } from '../utils';
 
 export default function SigninScreen() {
   const { search } = useLocation();
@@ -15,8 +17,9 @@ export default function SigninScreen() {
   const [password, setPassword] = useState('');
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
   const navigate = useNavigate();
-  
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -26,14 +29,20 @@ export default function SigninScreen() {
       });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
-      console.log('state:',state)
+      console.log('state:', state)
 
       navigate(redirect || '/');
 
     } catch (error) {
-      alert('Invalid email or password!');
+      toast.error(getError(error));
     }
   }
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect)
+    }
+  }, [userInfo, navigate, redirect]);
 
   return (
     <Container className="small-container">
