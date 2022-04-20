@@ -29,7 +29,6 @@ export default function SigninScreen() {
       });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
-      console.log('state:', state)
 
       navigate(redirect || '/');
 

@@ -12,6 +12,7 @@ function Product({ product }) {
   const {
     cart: { cartItems },
   } = state;
+  
 
   const addToCartHandler = async (item) => {
     const existItem = cartItems.find(item => item._id === product._id);
